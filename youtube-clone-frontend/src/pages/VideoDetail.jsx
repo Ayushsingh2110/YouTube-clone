@@ -6,39 +6,32 @@ import { useState, useEffect } from "react";
 import ReactPlayer from "react-player";
 import { Link, useParams } from "react-router-dom";
 
-import { Videos } from "./";
-import { fetchFromAPI } from "../utils/fetchFromAPI";
+import { Videos } from "../components";
+import { fetchFromAPI, fetchFromserver } from "../utils/fetchFromAPI";
 import { demoProfilePicture } from "../utils/constant";
 
-const VideoDetail = ({ setShowSidebar}) => {
-
-  let recomm_video_flexDirection = "column"
-  if(window.innerWidth < 900){
-    recomm_video_flexDirection = "row"
+const VideoDetail = ({ setShowSidebar }) => {
+  let recomm_video_flexDirection = "column";
+  if (window.innerWidth < 900) {
+    recomm_video_flexDirection = "row";
   }
 
   const { id } = useParams();
 
-  
   const [videoDetail, setVideoDetail] = useState([]);
   const [channelDetails, setChannelDetails] = useState(null);
   const [RelatedVideos, setRelatedVideo] = useState(null);
 
   const GetDataFromAPI = async () => {
-   
     try {
-      const videoResponse = await fetchFromAPI(
-        `videos?part=snippet,statistics&id=${id}`
-      );
-      const firstItem = videoResponse?.items[0];
+      const fetchedVideo = await fetchFromserver(`/videos/find/${id}`);
+      const firstItem = fetchedVideo[0];
       if (firstItem) {
         setVideoDetail(firstItem);
-        const channelId = firstItem?.snippet?.channelId;
+        const channelId = firstItem?.userId;
 
-        const channelResponse = await fetchFromAPI(
-          `channels?part=snippet&id=${channelId}`
-        );
-        const firstChannel = channelResponse?.items[0];
+        const fetchedChannel = await fetchFromserver(`/user/find/${channelId}`);
+        const firstChannel = fetchedChannel[0];
         if (firstChannel) {
           setChannelDetails(firstChannel);
         }
@@ -65,7 +58,7 @@ const VideoDetail = ({ setShowSidebar}) => {
   }
 
   return (
-    <Box minHeight="95vh" sx={{overflowY:"auto"}}>
+    <Box minHeight="95vh" sx={{ overflowY: "auto" }}>
       <Stack
         direction={{ xs: "column", md: "row" }}
         justifyContent="center"
@@ -79,18 +72,18 @@ const VideoDetail = ({ setShowSidebar}) => {
             flexDirection: "column",
             alignItems: "top",
             flex: 0.7,
-            height: '95vh'
+            height: "95vh",
           }}
         >
           <ReactPlayer
-            url={`https://www.youtube.com/watch?v=${id}`}
+            url={videoDetail?.vidoeUrl}
             className="react-player"
             controls
           />
 
           {/* Video Title */}
           <Typography color="#fff" variant="h5" fontWeight="bold" p={2}>
-            {videoDetail?.snippet?.title}
+            {videoDetail?.title}
           </Typography>
 
           <Stack
@@ -101,19 +94,18 @@ const VideoDetail = ({ setShowSidebar}) => {
             px={2}
           >
             <Box sx={{ display: "flex", gap: "10px" }}>
-              <Link to={`/channel/${videoDetail?.snippet?.channelId}`}>
+              <Link to={`/channel/${videoDetail?.userId}`}>
                 {/* Channel Avatar */}
                 <Avatar
                   src={
-                    channelDetails?.snippet?.thumbnails?.high?.url ||
-                    demoProfilePicture
+                    channelDetails?.img || demoProfilePicture
                   }
-                  alt={channelDetails?.snippet?.title}
+                  alt={channelDetails?.title}
                   className="miniProfileImg"
                 />
               </Link>
               <Link
-                to={`/channel/${videoDetail?.snippet?.channelId}`}
+                to={`/channel/${videoDetail?.userId}`}
                 style={{ display: "Flex", alignItems: "center" }}
               >
                 {/* Channel name */}
@@ -121,7 +113,7 @@ const VideoDetail = ({ setShowSidebar}) => {
                   variant={{ sm: "subtitle1", md: "h6" }}
                   color="#fff"
                 >
-                  {videoDetail?.snippet?.channelTitle}
+                  {channelDetails?.title}
                   <CheckCircleIcon
                     sx={{ fontSize: "12px", color: "gray", ml: "5px" }}
                   />
@@ -131,11 +123,11 @@ const VideoDetail = ({ setShowSidebar}) => {
 
             <Stack direction="row" gap="20px" alignItems="center">
               <Typography variant="body1" sx={{ opacity: 0.7 }}>
-                {parseInt(videoDetail?.statistics?.viewCount).toLocaleString()}
+                {parseInt(videoDetail?.views).toLocaleString()}
                 views
               </Typography>
               <Typography variant="body1" sx={{ opacity: 0.7 }}>
-                {parseInt(videoDetail?.statistics?.likeCount).toLocaleString()}
+                {parseInt(videoDetail?.likes).toLocaleString()}
                 likes
               </Typography>
             </Stack>
@@ -149,7 +141,10 @@ const VideoDetail = ({ setShowSidebar}) => {
           alignItems="center"
           flex={0.3}
         >
-          <Videos videos={RelatedVideos} direction={recomm_video_flexDirection} />
+          <Videos
+            videos={RelatedVideos}
+            direction={recomm_video_flexDirection}
+          />
         </Box>
       </Stack>
     </Box>

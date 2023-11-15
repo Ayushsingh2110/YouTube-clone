@@ -12,8 +12,8 @@ Router.get("/subscription", verifyToken, subscriptionVideos);
 Router.get("/random", randomVideos);
 Router.get("/trending", trendingVideos);
 Router.get("/tags", getByTag);
-Router.get("/delete/:videoId", getVideo);
-Router.get("/delete/:videoId", search);
+Router.get("/find/:videoId", getVideo);
+Router.get("/search", search);
 Router.put("/view/:videoId", addView)
 
 export default Router;

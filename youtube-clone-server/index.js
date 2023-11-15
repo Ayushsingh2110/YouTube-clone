@@ -6,6 +6,7 @@ import videoRouter from "./routes/VideoRoute.js";
 import commentRouter from "./routes/CommentRoute.js";
 import authRouter from "./routes/AuthRoute.js";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 
 const app = express();
 
@@ -20,6 +21,10 @@ const connect = () => {
 //dependencies
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors({
+  credentials:true,
+  origin:['http://localhost:3000']
+}))
 
 //routes
 app.use("/api/auth", authRouter);

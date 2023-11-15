@@ -15,7 +15,13 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    img:{
+    description:{
+        type: String,
+    },
+    profileImg:{
+        type: String,
+    },
+    templateImg:{
         type: String,
     },
     subscribers:{

@@ -16,35 +16,35 @@ import {
   demoChannelTitle,
   demoChannelUrl,
 } from "../utils/constant";
+import { useEffect, useState } from "react";
+import { fetchFromserver } from "../utils/fetchFromAPI";
 
-const VideoCard = ({ video: { id, snippet } }) => {
-  const channelId = snippet?.channelId;
-  const VideoId = id?.videoId;
+const VideoCard = ({ video }) => {
+  /*const channelId = snippet?.channelId;
+  const VideoId = id?.videoId;*/
 
-  let mdWidth;
-  let smWidth;
-  let xsWidth;
+  const [Channel, setChannel] = useState({});
+  useEffect(() => {
+    const fetchChannel = async() => {
+      await fetchFromserver(`/users/find/${video.userId}`).then((data) => setChannel(data))
+    }
+  })
 
   return (
     //Whole card body
-    <Card
+    <Card 
       sx={{
         width: { xs: "100%", sm: "30vw", md: "25vw" },
         backgroundColor: "transparent",
         display: "flex",
         flexDirection: "column",
       }}
-    > {/* Video Thumbnail*/}
-      <Link to={VideoId ? `/video/${VideoId}` : demoVideoUrl}>
-        <CardMedia
-          component="img"
-          image={snippet?.thumbnails?.high?.url}
-          alt={snippet?.title}
-          sx={{
-            width: { xs: "100%", sm: "30vw", md: "25vw" },
-            objectFit: "cover"
-          }}
-        />
+    > 
+    {/* Video Thumbnail*/}
+      <Link to={video._id ? `/video/${video._id}` : demoVideoUrl}> 
+        <img src={video.imgUrl}
+        alt={video?.title}
+        className="videoThumbnail"/>
       </Link>
 
       {/* Video Details*/}
@@ -59,17 +59,17 @@ const VideoCard = ({ video: { id, snippet } }) => {
       >
         <Avatar />
         <Stack direction="column" alignItems="start" spacing={0.5}>
-          <Link to={VideoId ? `/video/${VideoId}` : demoVideoUrl}>
+          <Link to={video._id ? `/video/${video._id}` : demoVideoUrl}>
             {/*Video Title*/}
             <Typography variant="subtitle1" fontSize="2vh" color="#FFF">
-              {snippet?.title.slice(0,60) || demoVideoTitle.slice(0, 60)}...
+              {video?.title.slice(0,60) || demoVideoTitle.slice(0, 60)}{(video?.title.length > 60)? "..." : ""}
             </Typography>
           </Link>
            
-          <Link to={channelId ? `/channel/${channelId}` : demoChannelUrl}>
+          <Link to={Channel._id ? `/channel/${Channel._id}` : demoChannelUrl}>
             {/*Channel name*/}
             <Typography variant="subtitle2" color="grey">
-              {snippet?.channelTitle || demoChannelTitle}
+              {Channel?.name || demoChannelTitle}
               <CheckCircle sx={{ fontSize: 12, color: "grey", mk: 5 }} />
             </Typography>
           </Link>

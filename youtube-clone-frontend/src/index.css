@@ -29,16 +29,12 @@ a {
   background-color: transparent;
 }
 
-
-
 .react-player {
   height: 77vh !important;
   width: 100% !important;
 }
 
-
-
-/*Navbar*/
+/*Navbar (Navbar.jsx)*/
 .Navbar{
   display:flex;
   flex-direction: row;
@@ -88,12 +84,15 @@ a {
   font-size:medium;
 }
 
-.searchIcon :only-child{
-  display: none;
+.signInBtn{
+  background: transparent;
+  border: 1px solid grey;
+  border-radius: 2rem;
+  color: azure;
+  cursor: pointer;
 }
 
-
-/*Side bar*/
+/*Side bar (Sidebar.jsx)*/
 .Sidebar_main{
   display:flex;
   overflow-y: auto;
@@ -137,7 +136,7 @@ a {
 }
 
 
-/*Home Page*/
+/*App.js*/
 .homeContainer{
   display:flex;
   flex-direction: row;
@@ -145,7 +144,14 @@ a {
   width: 100%;
 }
 
-/*channel page*/
+/*Feed.jsx*/
+.feedContainer{
+  display:flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+/*channel page (ChannelDetail.jsx)*/
 .channelProfileTemplate{
   height: 20vh;
   z-index: 10;
@@ -189,6 +195,37 @@ a {
   width:fit-content;
 }
 
+/*SignIn (SignIn.jsx)*/
+
+
+/*SignUp (SignUp.jsx)*/
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.signup-form .MuiTextField-root {
+  border: 1px solid azure;
+  border-radius: 3px;
+  padding: 10px;
+  background-color: transparent;
+  width: 50vw;
+  min-width: 250px;
+  color: azure;
+}
+
+.signup-form .MuiButton-root {
+  margin-top: 20px;
+  width: 30vw;
+  min-width: 300px;
+}
+
+/*Video card (VideoCard.jsx)*/
+.videoThumbnail{
+  width: 25vw;
+}
 
 @media screen and (max-width: 900px) {
   .category-btn{
@@ -261,15 +298,4 @@ a {
   .channelProfileTemplate{
     height: 10vh;
   }
-}
-
-@media screen and (max-width: 425px){
-  .searchForm{
-    display: none;
-  }
-
-  .searchIcon :only-child{
-    display: block;
-  }
-
 }
