@@ -12,8 +12,7 @@ const userSchema = new mongoose.Schema({
         unique: true
     },
     password:{
-        type: String,
-        required: true,
+        type: String
     },
     description:{
         type: String,
@@ -31,6 +30,10 @@ const userSchema = new mongoose.Schema({
     subscribedUsers:{
         type: [String],
         default:[]
+    },
+    fromGoogle:{
+        type: Boolean,
+        default:false
     }
 
 }, {timestamps: true}

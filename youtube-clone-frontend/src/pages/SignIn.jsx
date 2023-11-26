@@ -1,14 +1,14 @@
 import axios from "axios";
 import React, { useState } from "react";
-//import { useDispatch } from "react-redux";
 import styled from "styled-components";
-//import { loginFailure, loginStart, loginSuccess } from "../redux/userSlice";
-//import { auth, provider } from "../firebase";
-//import { signInWithPopup } from "firebase/auth";
-//import { async } from "@firebase/util";
 import { useNavigate, Link } from "react-router-dom";
 import { lightBlue } from "@mui/material/colors";
-
+import { postToServer } from "../utils/fetchFromAPI";
+import { loginFailure, loginStart, loginSuccess } from "../redux/userSlice";
+import { useDispatch } from "react-redux";
+import { auth, provider } from "../firebase";
+import { signInWithPopup } from "firebase/auth";
+//import { async } from "@firebase/util";
 
 const Container = styled.div`
   display: flex;
@@ -78,20 +78,24 @@ const More = styled.div`
 
 
 const SignIn = () => {
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  //const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate()
 
-  /*const handleLogin = async (e) => {
+  const userLogin = async (e) => {
     e.preventDefault();
+    console.log("userlogin clicked");
     dispatch(loginStart());
     try {
-      const res = await axios.post("/auth/signin", { name, password });
-      dispatch(loginSuccess(res.data));
+      console.log("signin try active");
+      const res = await postToServer("auth/signin", {email, password} );
+      console.log(res)
+      dispatch(loginSuccess(res));
+      
       navigate("/")
     } catch (err) {
+      console.log("error from signin.jsx");
       dispatch(loginFailure());
     }
   };
@@ -100,22 +104,22 @@ const SignIn = () => {
     dispatch(loginStart());
     signInWithPopup(auth, provider)
       .then((result) => {
-        axios
-          .post("/auth/google", {
+        console.log(result)
+        postToServer("auth/google", {
             name: result.user.displayName,
             email: result.user.email,
-            img: result.user.photoURL,
+            profileImg: result.user.photoURL,
           })
           .then((res) => {
             console.log(res)
-            dispatch(loginSuccess(res.data));
+            dispatch(loginSuccess(res));
             navigate("/")
           });
       })
       .catch((error) => {
         dispatch(loginFailure());
       });
-  };*/
+  };
 
   //TODO: REGISTER FUNCTIONALITY
 
@@ -124,39 +128,24 @@ const SignIn = () => {
     <Container>
       <Wrapper>
         <Title>Sign in With</Title>
-        <Button>Google</Button>
+        <Button onClick={signInWithGoogle}>Google</Button>
         <Title>or</Title>
-        <Input placeholder="username" />
-        <Input type="password" placeholder="password" />
-        <Button>Sign in</Button>
+         {/*Email*/}
+         <Input type="text" placeholder="Email" 
+        onChange={e => setEmail(e.target.value)}/>
+
+        {/*Password*/}
+        <Input type="password" placeholder="Password" 
+        onChange={e => setPassword(e.target.value)}/>
+
+        <Button onClick={userLogin}>Sign in</Button>
         <More>
           <Link to="/signup"
           sx={{color: "lightBlue"}}>Create Account</Link>
         </More>
       </Wrapper>
     
-    {/*  <Container>
-      <Wrapper>
-        <Title>Sign in With</Title>
-        <Button >Google</Button>
-        <Title>or</Title>
-        <Input
-          placeholder="username"
-          onChange={(e) => setName(e.target.value)}
-        />
-        <Input
-          type="password"
-          placeholder="password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <Button>Sign in</Button>
-        <Link to="/signup">Create Account</Link>
-      </Wrapper>
-    </Container>*/}
   </Container>
-  
-
-    
     
   );
 };

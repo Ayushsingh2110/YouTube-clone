@@ -24,3 +24,8 @@ export const fetchFromserver = async (url) => {
   const {data} = await axios.get(`http://localhost:8800/api/${url}`);
   return data;
 }
+
+export const postToServer = async(url, args) => {
+  const {data} = await axios.post(`http://localhost:8800/api/${url}`, args);
+  return data;
+}

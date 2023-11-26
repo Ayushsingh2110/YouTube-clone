@@ -33,7 +33,7 @@ export const signUp = async (req, res, next) => {
 export const signIn = async (req, res, next) => {
     try {
         //checking user is already registered or not
-        const user = await User.findOne({ name: req.body.name });
+        const user = await User.findOne({ email: req.body.email });
         if (!user) return next(createError(404, "Wrong username OR please signup if you don't have any account"));
 
         //checking enterd password is same as encrypted password stored in DB
@@ -55,10 +55,27 @@ export const signIn = async (req, res, next) => {
 }
 
 
-export const googleAuth = () => {
+export const googleAuth = async (req,res,next) => {
     try {
-        const user = new User()
+        const user = await User.findOne({email: req.body.email});
+        if(user){
+            const token = jwt.sign({id: user._id}, process.env.JWT);
+            res.cookie("access_token", token, {
+                httpOnly: true,
+            }).status(200).json(user._doc);
+        }else{
+            const user = new User({
+                ...req.body,
+                fromGoogle: true
+            })
+            const userSave = await user.save() 
+
+            const token = jwt.sign({id: userSave._id}, process.env.JWT);
+            res.cookie("access_token", token, {
+                httpOnly: true,
+            }).status(200).json(userSave._doc);
+        }
     } catch (error) {
-        //err code
+        next(error);
     }
 }

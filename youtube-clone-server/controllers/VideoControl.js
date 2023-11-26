@@ -74,7 +74,7 @@ export const addView = async (req, res, next) => {
     }
 }
 
-//Fetch random videos for feed 
+//Random videos 
 export const randomVideos = async (req, res, next) => {
     try {
         const randomVideos = await Video.aggregate(
@@ -86,7 +86,7 @@ export const randomVideos = async (req, res, next) => {
     }
 }
 
-//fetch trending videos
+//Trending videos
 export const trendingVideos = async (req, res, next) => {
     try {
         const trendingVideos = await Video.find().sort({views: -1});

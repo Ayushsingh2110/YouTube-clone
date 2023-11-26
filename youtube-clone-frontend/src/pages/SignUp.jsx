@@ -1,10 +1,8 @@
-import React from "react";
-import { TextField, Button } from "@mui/material";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-const SignUp = () => {
-  const Container = styled.div`
+const Container = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -60,13 +58,27 @@ const SignUp = () => {
     color: azure;
   `;
 
+const SignUp = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   return (
     <Container>
       <Title>Sign in With</Title>
       <Form>
-        <Input type="text" placeholder="Username" />
-        <Input type="text" placeholder="Email" />
-        <Input type="password" placeholder="Password" />
+        {/*Name*/}
+        <Input type="text" placeholder="Username" 
+        onChange={e => setName(e.target.value)} />
+
+        {/*Email*/}
+        <Input type="text" placeholder="Email" 
+        onChange={e => setEmail(e.target.value)}/>
+
+        {/*Password*/}
+        <Input type="password" placeholder="Password" 
+        onChange={e => setPassword(e.target.value)}/>
+
         <Button>Sign up</Button>
       </Form>
       <Title>or</Title>

@@ -1,4 +1,4 @@
-import { Stack, Box, IconButton, useMediaQuery } from "@mui/material";
+import { Stack, Box, IconButton, useMediaQuery, Avatar } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import MenuIcon from "@mui/icons-material/Menu";
 import VideoCallIcon from "@mui/icons-material/VideoCall";
@@ -10,16 +10,24 @@ import { Link, useNavigate } from "react-router-dom";
 import { logo } from "../utils/constant";
 import SearchBar from "./SearchBar";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 const Navbar = ({ ShowSidebar, setShowSidebar }) => {
-  const clickEvent = () => {
-    setShowSidebar(!ShowSidebar);
-  };
   const isTablet = useMediaQuery("(max-width: 769px)");
   const isMobile = useMediaQuery("(max-width: 480px)"); //to check if screen width is less than 425px so that .searchIcon can be added to DOM
+
   const searchBtn = document.querySelector(".searchBtn");
   const searchForm = document.querySelector(".mobile_searchBar");
   const removeSearch = document.querySelector(".backArrow");
+
+  const currentUser = useSelector((state) => state.user.currentUser);
+  const isAuthenticated = !!currentUser;
+
+  
+  const clickEvent = () => {
+    setShowSidebar(!ShowSidebar);
+    console.log(currentUser);
+  };
 
   useEffect(() => {
     if (searchBtn && searchForm) {
@@ -60,20 +68,24 @@ const Navbar = ({ ShowSidebar, setShowSidebar }) => {
   return (
     <div className="Navbar">
       <Stack direction="row" alignItems="start">
-        {!isTablet && <IconButton
-          aria-label="open drawer"
-          edge="start"
-          sx={{ mx: 1, color: "whitesmoke" }}
-          onClick={clickEvent}
-        >
-          <MenuIcon />
-        </IconButton>}
+        {!isTablet && (
+          <IconButton
+            aria-label="open drawer"
+            edge="start"
+            sx={{ mx: 1, color: "whitesmoke" }}
+            onClick={clickEvent}
+          >
+            <MenuIcon />
+          </IconButton>
+        )}
 
         <Link to="/" style={{ display: "Flex", alignItems: "center", mx: 1 }}>
           <img src={logo} alt="logo" height={45} />
         </Link>
       </Stack>
-      {!isMobile && <SearchBar searchTerm={searchTerm} setSearchterm={setSearchterm} />}
+      {!isMobile && (
+        <SearchBar searchTerm={searchTerm} setSearchterm={setSearchterm} />
+      )}
 
       <form className="mobile_searchBar" onSubmit={submitSearch}>
         <IconButton className="backArrow">
@@ -90,7 +102,8 @@ const Navbar = ({ ShowSidebar, setShowSidebar }) => {
         />
       </form>
 
-      <Box>
+      <Box sx={{display: "flex"}}>
+        {/*-------------- Search Icon ---------- */}
         {isMobile && (
           <IconButton
             className="searchIcon"
@@ -105,7 +118,8 @@ const Navbar = ({ ShowSidebar, setShowSidebar }) => {
           <NotificationsNoneIcon />
         </IconButton>
 
-        {!isMobile && (
+        {/*-------- SignIn Button / user profile icon -------- */}
+        {!isMobile && !isAuthenticated && (
           <Link to="/signin">
             <button className="signInBtn">
               Sign In
@@ -123,6 +137,12 @@ const Navbar = ({ ShowSidebar, setShowSidebar }) => {
               </IconButton>
             </button>
           </Link>
+        )}
+        
+        {!isMobile && isAuthenticated && (
+          <Avatar src={currentUser.profileImg} alt={currentUser.name}>
+            {!currentUser.profileImg ? currentUser.name[0].toUpperCase() : null}
+          </Avatar>
         )}
       </Box>
     </div>
