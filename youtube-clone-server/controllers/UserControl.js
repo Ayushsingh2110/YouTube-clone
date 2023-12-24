@@ -81,7 +81,7 @@ export const unsubUser = async (req, res, next) => {
 }
 
 export const likeVideo = async (req, res, next) => {
-    const id = req.user.id;
+    const id = req.user._id;
     const videoId = req.params.videoId;
     try {
       await Video.findByIdAndUpdate(videoId,{
@@ -95,7 +95,7 @@ export const likeVideo = async (req, res, next) => {
   };
   
   export const dislikeVideo = async (req, res, next) => {
-      const id = req.user.id;
+      const id = req.user._id;
       const videoId = req.params.videoId;
       try {
         await Video.findByIdAndUpdate(videoId,{

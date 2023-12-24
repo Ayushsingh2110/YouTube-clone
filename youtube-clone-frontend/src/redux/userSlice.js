@@ -25,9 +25,18 @@ const userSlice = createSlice({
             state.currentUser = null;
             state.loading = false;
             state.error = false;
+        },
+        subscription: (state, action) => {
+            state.currentUser.subscribedUsers.include(action.payload)
+                ? state.currentUser.subscribedUsers.splice(
+                    state.currentUser.subscribedUsers.findIndex(
+                        channel_id => channel_id === action.payload
+                    )
+                )
+                : state.currentUser.subscribedUsers.push(action.payload)
         }
     }
 })
 
-export const { loginStart, loginSuccess, loginFailure, logout } = userSlice.actions;
+export const { loginStart, loginSuccess, loginFailure, logout, subscription } = userSlice.actions;
 export default userSlice.reducer;

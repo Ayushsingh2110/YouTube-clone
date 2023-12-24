@@ -4,7 +4,7 @@ import User from "../models/UserModel.js";
 
 //Create video
 export const createVideo = async (req, res, next) => {
-    const newVideo = new Video({ userId: req.user.id, ...req.body });
+    const newVideo = new Video({ userId: req.user.id , ...req.body });
     try {
         const savedVideo = await newVideo.save();
         res.status(200).json(savedVideo)

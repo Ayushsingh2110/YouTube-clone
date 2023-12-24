@@ -5,3 +5,6 @@ export { default as Sidebar } from './Sidebar';
 export { default as VideoCard } from './VideoCard';
 export { default as ChannelCard } from './ChannelCard';
 export { default as BottomNav } from './BottomNav';
+export { default as Comment } from './Comment';
+export { default as CommentSection } from './CommentSection';
+export { default as Upload } from './UploadVideo';

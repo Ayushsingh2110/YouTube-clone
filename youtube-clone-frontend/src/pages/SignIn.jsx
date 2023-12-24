@@ -85,10 +85,8 @@ const SignIn = () => {
 
   const userLogin = async (e) => {
     e.preventDefault();
-    console.log("userlogin clicked");
     dispatch(loginStart());
     try {
-      console.log("signin try active");
       const res = await postToServer("auth/signin", {email, password} );
       console.log(res)
       dispatch(loginSuccess(res));

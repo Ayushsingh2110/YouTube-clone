@@ -6,15 +6,20 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import SearchIcon from "@mui/icons-material/Search";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import { Link, useNavigate } from "react-router-dom";
+import VideoCallOutlinedIcon from "@mui/icons-material/VideoCallOutlined";
+
 import { logo } from "../utils/constant";
 import SearchBar from "./SearchBar";
+
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { Upload } from "../components";
+
 
 const Navbar = ({ ShowSidebar, setShowSidebar }) => {
   const isTablet = useMediaQuery("(max-width: 769px)");
-  const isMobile = useMediaQuery("(max-width: 480px)"); //to check if screen width is less than 425px so that .searchIcon can be added to DOM
+  const isMobile = useMediaQuery("(max-width: 480px)"); //to check if screen width is less than 480px so that .searchIcon can be added to DOM
 
   const searchBtn = document.querySelector(".searchBtn");
   const searchForm = document.querySelector(".mobile_searchBar");
@@ -23,7 +28,6 @@ const Navbar = ({ ShowSidebar, setShowSidebar }) => {
   const currentUser = useSelector((state) => state.user.currentUser);
   const isAuthenticated = !!currentUser;
 
-  
   const clickEvent = () => {
     setShowSidebar(!ShowSidebar);
     console.log(currentUser);
@@ -54,6 +58,7 @@ const Navbar = ({ ShowSidebar, setShowSidebar }) => {
   const navigate = useNavigate();
 
   const [searchTerm, setSearchterm] = useState();
+  const [OpenUploadPage, setOpenUploadPage] = useState(false);
 
   const submitSearch = (e) => {
     e.preventDefault();
@@ -66,6 +71,7 @@ const Navbar = ({ ShowSidebar, setShowSidebar }) => {
   };
 
   return (
+    <>
     <div className="Navbar">
       <Stack direction="row" alignItems="start">
         {!isTablet && (
@@ -87,6 +93,7 @@ const Navbar = ({ ShowSidebar, setShowSidebar }) => {
         <SearchBar searchTerm={searchTerm} setSearchterm={setSearchterm} />
       )}
 
+      {/*-------------- Search bar for small screens (<480px) ---------- */}
       <form className="mobile_searchBar" onSubmit={submitSearch}>
         <IconButton className="backArrow">
           <ArrowBackIcon style={{ color: "whitesmoke" }} />
@@ -102,7 +109,7 @@ const Navbar = ({ ShowSidebar, setShowSidebar }) => {
         />
       </form>
 
-      <Box sx={{display: "flex"}}>
+      <Box sx={{ display: "flex" }}>
         {/*-------------- Search Icon ---------- */}
         {isMobile && (
           <IconButton
@@ -111,6 +118,12 @@ const Navbar = ({ ShowSidebar, setShowSidebar }) => {
             sx={{ mx: 1, color: "whitesmoke" }}
           >
             <SearchIcon className="searchBtn" />
+          </IconButton>
+        )}
+
+        {currentUser && (
+          <IconButton edge="start" sx={{ mx: 1, color: "whitesmoke" }}>
+            <VideoCallOutlinedIcon onClick={() => setOpenUploadPage(true)} />
           </IconButton>
         )}
 
@@ -138,7 +151,7 @@ const Navbar = ({ ShowSidebar, setShowSidebar }) => {
             </button>
           </Link>
         )}
-        
+
         {!isMobile && isAuthenticated && (
           <Avatar src={currentUser.profileImg} alt={currentUser.name}>
             {!currentUser.profileImg ? currentUser.name[0].toUpperCase() : null}
@@ -146,6 +159,8 @@ const Navbar = ({ ShowSidebar, setShowSidebar }) => {
         )}
       </Box>
     </div>
+    {OpenUploadPage && (<Upload setOpen={setOpenUploadPage} />)}
+    </>
   );
 };
 

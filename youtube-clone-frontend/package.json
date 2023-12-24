@@ -20,7 +20,8 @@
     "react-scripts": "^5.0.1",
     "redux-devtools-extension": "^2.13.9",
     "redux-persist": "^6.0.0",
-    "styled-components": "^6.1.1"
+    "styled-components": "^6.1.1",
+    "timeago.js": "^4.0.2"
   },
   "scripts": {
     "start": "react-scripts start",

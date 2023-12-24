@@ -16,16 +16,25 @@ const options = {
 
 export const fetchFromAPI = async (url) => {
     const {data} = await axios.get(`${BASE_URL}/${url}`, options);
-
     return data;
 }
 
 export const fetchFromserver = async (url) => {
-  const {data} = await axios.get(`http://localhost:8800/api/${url}`);
+  const {data} = await axios.get(`http://localhost:8800/api/${url}`, {
+    withCredentials: true, 
+  });
   return data;
 }
 
 export const postToServer = async(url, args) => {
-  const {data} = await axios.post(`http://localhost:8800/api/${url}`, args);
+  await axios.post(`http://localhost:8800/api/${url}`, args, {
+    withCredentials: true, 
+  });
+}
+
+export const putToServer = async(url, args) => {
+  const {data} = await axios.put(`http://localhost:8800/api/${url}`,  args, {
+    withCredentials: true, 
+  });
   return data;
 }
