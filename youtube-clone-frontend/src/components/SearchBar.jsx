@@ -24,10 +24,13 @@ const SearchBar = ({ searchTerm, setSearchterm}) => {
     onSubmit={submitSearch}
     className="searchForm"
     sx={{
-        borderRadius: 20,
+        borderRadius: '2rem',
         border: '1px solid #e3e3e3',
         pl: 2,
         boxShadow: 'none',
+        display: 'flex',
+        alignContent: "center",
+        height: '30px',
         mr: { sm: 5 },
         background: "slate"
     }}

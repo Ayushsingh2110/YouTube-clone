@@ -30,7 +30,6 @@ const Navbar = ({ ShowSidebar, setShowSidebar }) => {
 
   const clickEvent = () => {
     setShowSidebar(!ShowSidebar);
-    console.log(currentUser);
   };
 
   useEffect(() => {
@@ -134,7 +133,7 @@ const Navbar = ({ ShowSidebar, setShowSidebar }) => {
         {/*-------- SignIn Button / user profile icon -------- */}
         {!isMobile && !isAuthenticated && (
           <Link to="/signin">
-            <button className="signInBtn">
+            <div className="signInBtn">
               Sign In
               <IconButton
                 edge="start"
@@ -148,7 +147,7 @@ const Navbar = ({ ShowSidebar, setShowSidebar }) => {
               >
                 <AccountCircleOutlinedIcon alt="SignIn" />
               </IconButton>
-            </button>
+            </div>
           </Link>
         )}
 

@@ -27,7 +27,7 @@ const userSlice = createSlice({
             state.error = false;
         },
         subscription: (state, action) => {
-            state.currentUser.subscribedUsers.include(action.payload)
+            state.currentUser.subscribedUsers.includes(action.payload)
                 ? state.currentUser.subscribedUsers.splice(
                     state.currentUser.subscribedUsers.findIndex(
                         channel_id => channel_id === action.payload

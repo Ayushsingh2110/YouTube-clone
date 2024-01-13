@@ -31,6 +31,14 @@ const userSchema = new mongoose.Schema({
         type: [String],
         default:[]
     },
+    likedVideos:{
+        type: [String],
+        default:[]
+    },
+    watchHistory: {
+        type: [String],
+        default: []
+    },
     fromGoogle:{
         type: Boolean,
         default:false

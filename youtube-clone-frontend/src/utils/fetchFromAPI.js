@@ -21,20 +21,24 @@ export const fetchFromAPI = async (url) => {
 
 export const fetchFromserver = async (url) => {
   const {data} = await axios.get(`http://localhost:8800/api/${url}`, {
-    withCredentials: true, 
+    withCredentials: true,
   });
   return data;
 }
 
 export const postToServer = async(url, args) => {
-  await axios.post(`http://localhost:8800/api/${url}`, args, {
+  return await axios.post(`http://localhost:8800/api/${url}`, args, {
     withCredentials: true, 
   });
 }
 
 export const putToServer = async(url, args) => {
-  const {data} = await axios.put(`http://localhost:8800/api/${url}`,  args, {
+  try {
+    return await axios.put(`http://localhost:8800/api/${url}`,  args, {
     withCredentials: true, 
   });
-  return data;
+  } catch (error) {
+    console.log(`from fetchFromAPI: ${error}`)
+  }
+  
 }

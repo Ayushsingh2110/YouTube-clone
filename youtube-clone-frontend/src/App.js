@@ -4,6 +4,7 @@ import { BottomNav, Navbar, Sidebar } from './components';
 import { useEffect, useState } from 'react';
 import { fetchFromAPI } from './utils/fetchFromAPI';
 import { ChannelDetail, Feed, SearchFeed, SignIn, SignUp, VideoDetail } from './pages';
+import ExplorePage from './pages/Explore';
 
 
 const App = () => {
@@ -19,7 +20,7 @@ const App = () => {
     }, [selectedCategory]);*/
 
     let sidebar;
-    if (ShowSidebar) {
+    if (ShowSidebar && !isMobile) {
         sidebar =
             <Box sx={{ flex: 0.15 }} >
                 <Box
@@ -37,19 +38,23 @@ const App = () => {
 
     return (
         <BrowserRouter>
-            <Box sx={{ backgroundColor: '#0f0f0f' }}>
+            <Box sx={{ backgroundColor: '#0f0f0f', height:"100vh", width:"100%" }}>
                 <Navbar ShowSidebar={ShowSidebar} setShowSidebar={setShowSidebar} />
                 <div className="homeContainer">
+                    <div className="sidebar_container">
+                       {sidebar} 
+                    </div>
 
-                    {sidebar}
-
-                    <Box sx={{ flex: 0.85 }}>
+                    <Box sx={{ flex: 1, height: '100%' }}>
 
                         <Routes>
                             <Route path="/">
                                 <Route index element={<Feed type="random" />} />
-                                <Route path="trends" element={<Feed type="trend" />} />
-                                <Route path="subscriptions" element={<Feed type="sub" />} />
+                                <Route path="explore">
+                                    <Route index element={<ExplorePage />}/>
+                                    <Route path="trending" element={<Feed type="trending" />}/>
+                                </Route>
+                                <Route path="subscriptions" element={<Feed type="subscription" />} />
                                 <Route path={selectedCategory} element={<Feed selectedCategory={selectedCategory} />} />
                                 <Route
                                     path="signin"

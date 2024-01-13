@@ -1,5 +1,6 @@
 import User from "../models/UserModel.js";
 import { createError } from "../utils/error.js";
+import Video from "../models/VideoModel.js";
 
 export const test = () => {
     console.log("test is working!");
@@ -55,7 +56,7 @@ export const subUser = async (req, res, next) => {
         });
         //incrementing subscriber count of channel subscribed
         await User.findByIdAndUpdate(req.params.userId, {
-            $inc : {subscribers : 1}
+            $inc: { subscribers: 1 }
         })
         res.status(200).json("Subscribbed !!")
     } catch (err) {
@@ -72,7 +73,7 @@ export const unsubUser = async (req, res, next) => {
         });
         //Decrementing subscriber count of channel subscribed
         await User.findByIdAndUpdate(req.params.userId, {
-            $inc : {subscribers : -1}
+            $inc: { subscribers: -1 }
         })
         res.status(200).json("Unsubscribbed !!")
     } catch (err) {
@@ -81,29 +82,62 @@ export const unsubUser = async (req, res, next) => {
 }
 
 export const likeVideo = async (req, res, next) => {
-    const id = req.user._id;
+    const userId = req.user.id;
     const videoId = req.params.videoId;
     try {
-      await Video.findByIdAndUpdate(videoId,{
-        $addToSet:{likes:id},
-        $pull:{dislikes:id}
-      })
-      res.status(200).json("The video has been liked.")
+        let video;
+        try {
+            video = await Video.findById(videoId);
+        } catch (error) {
+            console.error('Error during Video.findById:', error);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+
+        // Check if the user already liked the video
+        if (!video.likes.includes(userId)) {
+            // If not liked, update the document
+            await Video.findByIdAndUpdate(videoId, {
+                $addToSet: { likes: userId },
+                $pull: { dislikes: userId }
+            });
+            await User.findByIdAndUpdate(userId, {
+                $addToSet: { likedVideos: videoId }
+            });
+            res.status(200).json("The video has been liked.");
+        } else {
+            res.status(200).json("The video is already liked by the user.");
+        }
     } catch (err) {
-      next(err);
+        next(err);
     }
-  };
-  
-  export const dislikeVideo = async (req, res, next) => {
-      const id = req.user._id;
-      const videoId = req.params.videoId;
-      try {
-        await Video.findByIdAndUpdate(videoId,{
-          $addToSet:{dislikes:id},
-          $pull:{likes:id}
-        })
-        res.status(200).json("The video has been disliked.")
+};
+
+export const dislikeVideo = async (req, res, next) => {
+    const id = req.user.id;
+    const videoId = req.params.videoId;
+    try {
+        let video;
+        try {
+            video = await Video.findById(videoId);
+        } catch (error) {
+            console.error('Error during Video.findById:', error);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+
+        if (!video.dislikes.includes(id)) {
+            await Video.findByIdAndUpdate(videoId, {
+                $addToSet: { dislikes: id },
+                $pull: { likes: id }
+            })
+            await User.findByIdAndUpdate(userId, {
+                $pull: { likedVideos: videoId }
+            });
+            res.status(200).json("The video has been disliked.")
+        } else {
+            res.status(200).json("The video is already disliked by the user.");
+        }
+
     } catch (err) {
-      next(err);
+        next(err);
     }
-  };
+};

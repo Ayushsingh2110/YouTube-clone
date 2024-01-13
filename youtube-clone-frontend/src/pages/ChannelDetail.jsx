@@ -25,19 +25,15 @@ const ChannelDetail = () => {
   and data of all of its videos
   */
   const getChannelfromAPI = async () => {
-    const GetChannel = await fetchFromserver(`/user/find/${id}`);
-    const Channel = GetChannel?.items[0];
-    if (Channel) {
-      setchannelDetails(Channel);
-      console.log(Channel);
+    const GetChannel = await fetchFromserver(`user/find/${id}`);
+    if (GetChannel) {
+      setchannelDetails(GetChannel);
     }
 
-    const GetChannelVideos = await fetchFromAPI(
-      `search?channelId=${id}&part=snippet,id&order=date`
-    );
-    const channelVideos = GetChannelVideos?.items;
-    if (channelVideos) {
-      setVideos(channelVideos);
+    const FetchedChannelVideos = await fetchFromserver(`video/channelVideos/${id}`);
+    if (FetchedChannelVideos.length > 0) {
+      setVideos(FetchedChannelVideos);
+      console.log(videos);
     }
   };
 
@@ -85,7 +81,7 @@ const ChannelDetail = () => {
             <Stack>
               {/* ------------- Channel Title -----------------*/}
               <Typography variant="h6" color={"azure"}>
-                {channelDetails?.title}{" "}
+                {channelDetails?.name}{" "}
                 <CheckCircleIcon
                   sx={{ fontSize: "14px", color: "gray", ml: "5px" }}
                 />
@@ -104,8 +100,8 @@ const ChannelDetail = () => {
 
               {/* ------------- Channel Description -----------------*/}
               <p className="CardDetail">
-                {channelDetails?.description.slice(0, 70)}
-                {channelDetails?.description.length > 70 ? "..." : ""}
+                {channelDetails?.description?.slice(0, 70)}
+                {channelDetails?.description?.length > 70 ? "..." : ""}
               </p>
             </Stack>
           </div>
@@ -113,7 +109,6 @@ const ChannelDetail = () => {
         <Box
           sx={{
             Width: "150px",
-            bgcolor: "#0f0f0f",
             borderBottom: "1px solid grey",
           }}
         >

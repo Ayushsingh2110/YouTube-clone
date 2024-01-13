@@ -75,23 +75,21 @@ const More = styled.div`
   color: azure;
 `;
 
-
-
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const userLogin = async (e) => {
     e.preventDefault();
     dispatch(loginStart());
     try {
-      const res = await postToServer("auth/signin", {email, password} );
-      console.log(res)
+      const res = await postToServer("auth/signin", { email, password });
+      console.log(res);
       dispatch(loginSuccess(res));
-      
-      navigate("/")
+
+      navigate("/");
     } catch (err) {
       console.log("error from signin.jsx");
       dispatch(loginFailure());
@@ -102,17 +100,14 @@ const SignIn = () => {
     dispatch(loginStart());
     signInWithPopup(auth, provider)
       .then((result) => {
-        console.log(result)
         postToServer("auth/google", {
-            name: result.user.displayName,
-            email: result.user.email,
-            profileImg: result.user.photoURL,
-          })
-          .then((res) => {
-            console.log(res)
-            dispatch(loginSuccess(res));
-            navigate("/")
-          });
+          name: result.user.displayName,
+          email: result.user.email,
+          profileImg: result.user.photoURL,
+        }).then((res) => {
+          dispatch(loginSuccess(res.data));
+          navigate("/");
+        });
       })
       .catch((error) => {
         dispatch(loginFailure());
@@ -121,30 +116,34 @@ const SignIn = () => {
 
   //TODO: REGISTER FUNCTIONALITY
 
-
   return (
     <Container>
       <Wrapper>
         <Title>Sign in With</Title>
         <Button onClick={signInWithGoogle}>Google</Button>
         <Title>or</Title>
-         {/*Email*/}
-         <Input type="text" placeholder="Email" 
-        onChange={e => setEmail(e.target.value)}/>
+        {/*Email*/}
+        <Input
+          type="text"
+          placeholder="Email"
+          onChange={(e) => setEmail(e.target.value)}
+        />
 
         {/*Password*/}
-        <Input type="password" placeholder="Password" 
-        onChange={e => setPassword(e.target.value)}/>
+        <Input
+          type="password"
+          placeholder="Password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
 
         <Button onClick={userLogin}>Sign in</Button>
         <More>
-          <Link to="/signup"
-          sx={{color: "lightBlue"}}>Create Account</Link>
+          <Link to="/signup" sx={{ color: "lightBlue" }}>
+            Create Account
+          </Link>
         </More>
       </Wrapper>
-    
-  </Container>
-    
+    </Container>
   );
 };
 

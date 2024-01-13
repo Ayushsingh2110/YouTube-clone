@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { CommentSection, Videos } from "../components";
+import { CommentSection, RecommendedVideos, Videos } from "../components";
 import {
   fetchFromAPI,
   fetchFromserver,
@@ -83,13 +83,22 @@ const VideoDetail = ({ setShowSidebar }) => {
     }
   };
 
+  const addViews = async() => {
+    if (currentUser?._id !== currentVideo?.userId) {
+      const userId = currentUser._id
+      try{
+        await putToServer(`video/view/${currentVideo?._id}`, { userId })
+      }catch{
+        console.log("view not added");
+      }
+    }
+  };
+
   useEffect(() => {
     GetDataFromAPI();
+    addViews();
   }, [id, dispatch]);
 
-  function testTask(){
-    console.log(currentVideo);
-  }
   const [showReadMoreBtn, setReadMoreBtn] = useState(true);
   const desc_ref = useRef(null);
   useEffect(() => {
@@ -105,20 +114,42 @@ const VideoDetail = ({ setShowSidebar }) => {
   }
 
   const handleLike = async () => {
-    await postToServer(`user/like/${currentVideo._id}`);
-    dispatch(like(currentUser._id));
+    try{
+      await putToServer(`user/like/${currentVideo?._id}`);
+    dispatch(like(currentUser?._id));
+    }catch(err){
+      console.log(`from videoDetail: ${err}`);
+    }
+    
   };
 
   const handleDislike = async () => {
-    await postToServer(`user/dislike/${currentVideo._id}`);
-    dispatch(dislike(currentUser._id));
+    await putToServer(`user/dislike/${currentVideo?._id}`);
+    dispatch(dislike(currentUser?._id));
   };
 
   const handleSub = async () => {
-    currentUser.subscribedUsers.includes(channelDetails?._id)
-      ? await putToServer(`users/unsub/${channelDetails?._id}`)
-      : await putToServer(`users/sub/${channelDetails?._id}`);
+    currentUser?.subscribedUsers.includes(channelDetails?._id)
+      ? await putToServer(`user/unsub/${channelDetails?._id}`)
+      : await putToServer(`user/sub/${channelDetails?._id}`);
     dispatch(subscription(channelDetails?._id));
+  };
+
+  const handleShareClick = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: currentVideo.title,
+          text: currentVideo.description,
+          url: window.location.href,
+        });
+        console.log('Shared successfully');
+      } catch (error) {
+        console.error('Error sharing:', error.message);
+      }
+    } else {
+      console.log('Web Share API not supported');
+    }
   };
 
   return (
@@ -126,12 +157,9 @@ const VideoDetail = ({ setShowSidebar }) => {
       <div className="video_page_content">
         {/*Video Player*/}
 
-        <div class="video-wrap">
-          <div class="video-container">
-            <video
-              className="react-player"
-              controls
-            >
+        <div className="video-wrap">
+          <div className="video-container">
+            <video className="react-player" controls>
               <source src={currentVideo.videoUrl}></source>
             </video>
           </div>
@@ -167,16 +195,18 @@ const VideoDetail = ({ setShowSidebar }) => {
                   />
                 </Typography>
               </Link>
+
               <span className="sub_count">
                 {channelDetails?.subscribers} subscribers
               </span>
             </div>
-
-            <button className="subscribe_button" onClick={handleSub}>
-              {currentUser.subscribedUsers?.includes(channelDetails?._id)
-                ? "Subscribed"
-                : "Subscribe"}
-            </button>
+            {currentUser?._id !== currentVideo.userId && (
+              <button className="subscribe_button" onClick={handleSub}>
+                {currentUser?.subscribedUsers?.includes(channelDetails?._id)
+                  ? "Subscribed"
+                  : "Subscribe"}
+              </button>
+            )}
           </Box>
 
           <div className="video_buttons">
@@ -186,7 +216,7 @@ const VideoDetail = ({ setShowSidebar }) => {
               ) : (
                 <ThumbUpOutlinedIcon />
               )}{" "}
-              {currentVideo.likes?.length}
+              {currentVideo.likes.length}
             </Button>
 
             <Button onClick={handleDislike}>
@@ -197,17 +227,17 @@ const VideoDetail = ({ setShowSidebar }) => {
               )}{" "}
             </Button>
 
-            <Button>
+            <Button onClick={handleShareClick}>
               <ReplyOutlinedIcon /> Share
             </Button>
 
-            <Button onClick={testTask}>
+            <Button>
               <AddTaskOutlinedIcon /> Save
             </Button>
           </div>
         </div>
 
-        <div className="video_description" >
+        <div className="video_description">
           <Typography
             variant="subtitle6"
             fontSize="13px"
@@ -222,17 +252,19 @@ const VideoDetail = ({ setShowSidebar }) => {
             style={{ color: "azure" }}
             ref={desc_ref}
           >
-            {currentVideo.description} Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam voluptatum, adipisci commodi nesciunt praesentium eius excepturi est modi numquam velit repellendus quidem quae molestias doloremque autem? Necessitatibus ratione aperiam natus!
+            {currentVideo.description}
           </p>
           {showReadMoreBtn && (
-            <span className="read_moreLess_btn" onClick={() => setIsOpen(!IsOpen)}>
-                {IsOpen ? "read Less" : "read more..."}
+            <span
+              className="read_moreLess_btn"
+              onClick={() => setIsOpen(!IsOpen)}
+            >
+              {IsOpen ? "read Less" : "read more..."}
             </span>
           )}
         </div>
 
-        <CommentSection videoId={currentVideo._id} />
-
+        <CommentSection videoId={currentVideo?._id} />
       </div>
 
       <Box
@@ -242,7 +274,7 @@ const VideoDetail = ({ setShowSidebar }) => {
         alignItems="center"
         flex={0.3}
       >
-        <Videos videos={RelatedVideos} direction={recomm_video_flexDirection} />
+        <RecommendedVideos tags={currentVideo.tags} />
       </Box>
     </div>
   );

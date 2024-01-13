@@ -27,7 +27,7 @@ const VideoCard = ({ video }) => {
       );
     };
     fetchChannel();
-  });
+  },[video]);
 
   return (
     //Whole card body
@@ -35,9 +35,9 @@ const VideoCard = ({ video }) => {
         className="videoCard"
       >
         {/* Video Thumbnail*/}
-        <Link to={video._id ? `/video/${video._id}` : demoVideoUrl}>
+        <Link to={video?._id ? `/video/${video?._id}` : demoVideoUrl}>
           <img
-            src={video.imgUrl}
+            src={video?.imgUrl}
             alt={video?.title}
             className="videoThumbnail"
           />
@@ -48,7 +48,7 @@ const VideoCard = ({ video }) => {
           <img src={Channel?.profileImg} alt="" className="video_card_ProfileImg"/>
           <Stack direction="column" alignItems="start" spacing={0.5}>
 
-            <Link to={video._id ? `/video/${video._id}` : demoVideoUrl}>
+            <Link to={video?._id ? `/video/${video?._id}` : demoVideoUrl}>
               {/*Video Title*/}
               <Typography variant="subtitle1" fontSize="16px" fontWeight={500} color="#FFF">
                 {video?.title.slice(0, 60) || demoVideoTitle.slice(0, 60)}
@@ -56,14 +56,14 @@ const VideoCard = ({ video }) => {
               </Typography>
             </Link>
 
-            <Link to={Channel._id ? `/channel/${Channel._id}` : demoChannelUrl}>
+            <Link to={Channel?._id ? `/channel/${Channel?._id}` : demoChannelUrl}>
               {/*Channel name*/}
               <Typography variant="subtitle2" color="grey">
                 {Channel?.name || demoChannelTitle}
                 <CheckCircle sx={{ fontSize: 12, color: "grey", mk: 5 }} />
               </Typography>
               <Typography variant="subtitle6" fontSize="14px" color="grey">
-                {video.views} views • {format(video.createdAt)}
+                {video?.views} views • {format(video?.createdAt)}
               </Typography>
             </Link>
 

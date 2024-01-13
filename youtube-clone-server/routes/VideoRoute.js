@@ -1,5 +1,5 @@
 import express from "express";
-import { addView, createVideo, deleteVideo, getByTag, getVideo, randomVideos, search, subscriptionVideos, trendingVideos, updateVideo } from "../controllers/VideoControl.js";
+import { addView, createVideo, deleteVideo, getByTag, getChannelVideos, getVideo, randomVideos, search, subscriptionVideos, trendingVideos, updateVideo } from "../controllers/VideoControl.js";
 import { verifyToken } from "../utils/verifyToken.js";
 
 const Router = express.Router();
@@ -13,7 +13,8 @@ Router.get("/random", randomVideos);
 Router.get("/trending", trendingVideos);
 Router.get("/tags", getByTag);
 Router.get("/find/:videoId", getVideo);
+Router.get("/channelVideos/:channelId", getChannelVideos);
 Router.get("/search", search);
-Router.put("/view/:videoId", addView)
+Router.put("/view/:videoId",verifyToken, addView)
 
 export default Router;

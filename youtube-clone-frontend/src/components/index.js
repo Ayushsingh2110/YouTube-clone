@@ -8,3 +8,5 @@ export { default as BottomNav } from './BottomNav';
 export { default as Comment } from './Comment';
 export { default as CommentSection } from './CommentSection';
 export { default as Upload } from './UploadVideo';
+export { default as RecommendedVideos } from './RecommendedVideos';
+export {default as NoSearchResult } from './NoSearchResult';

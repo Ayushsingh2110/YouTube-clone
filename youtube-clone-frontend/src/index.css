@@ -87,6 +87,11 @@ a {
 }
 
 /*Side bar (Sidebar.jsx)*/
+.active-menu-link{
+  color: black;
+  background-color: azure;
+}
+
 .Sidebar_main {
   display: flex;
   overflow-y: auto;
@@ -133,12 +138,12 @@ a {
 .homeContainer {
   display: flex;
   flex-direction: row;
-  justify-content: center;
   width: 100%;
 }
 
 /*Feed.jsx*/
 .feedContainer {
+  padding: 2vw;
   gap: 30px;
   display: flex;
   justify-content: space-around;
@@ -221,6 +226,7 @@ a {
 }
 .video_page_content {
   flex: 1;
+  padding: 2vw;
 }
 .video-wrap {
   width: 100%;
@@ -333,9 +339,6 @@ a {
 }
 
 /* comment section (CommentSection.jsx) */
-.CommentSection_container{
-
-}
 .newComment{
   display: flex;
   align-items: center;
@@ -392,7 +395,7 @@ a {
   margin-left: 5px;
 }
 
-/* Uload (Upload.jsx)*/
+/* Upload (Upload.jsx)*/
 .upload_container{
   width: 100%;
   height: 100%;
@@ -465,9 +468,13 @@ a {
   .Sidebar_main {
     height: auto;
     flex-direction: row;
-    position: inherit;
     overflow-x: scroll;
     padding: 0;
+  }
+
+  .sidebar_container{
+    position: fixed;
+    left: -1000px;
   }
 
   .homeContainer {
