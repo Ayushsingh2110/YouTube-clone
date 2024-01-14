@@ -1,0 +1,524 @@
+@import url("https://fonts.cdnfonts.com/css/youtube-sans");
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgb(114, 113, 113);
+  border-radius: 10px;
+  height: 200px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+/*Navbar (Navbar.jsx)*/
+.Navbar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  background: #000;
+  justify-content: space-between;
+  padding: 5px;
+  z-index: 1000;
+}
+
+.search-bar {
+  border: none;
+  outline: none;
+  width: 350px;
+}
+
+.mobile_searchBar {
+  position: absolute;
+  left: -4000px;
+  width: 100vw;
+  height: 100%;
+  display: flex;
+  background: #13130d;
+  align-items: center;
+  transition: 0.5s ease-in-out;
+  z-index: 10000;
+}
+
+.mobile_searchBar.active {
+  left: 0px;
+}
+
+.mobile_searchBar input {
+  width: 100%;
+  outline: none;
+  height: 38px;
+  font-size: 1.25em;
+  background: rgb(60, 60, 60);
+  border: 1px solid black;
+  border-radius: 25px;
+  box-sizing: border-box;
+  padding: 10px;
+  margin: 0 10px;
+  color: whitesmoke;
+  font-size: medium;
+}
+
+.signInBtn {
+  background: transparent;
+  border: 1px solid grey;
+  border-radius: 2rem;
+  color: azure;
+  cursor: pointer;
+}
+
+/*Side bar (Sidebar.jsx)*/
+.active-menu-link{
+  color: black;
+  background-color: azure;
+}
+
+.Sidebar_main {
+  display: flex;
+  overflow-y: auto;
+  height: 95%;
+  flex-direction: column;
+  position: relative;
+  border-right: 1px solid grey;
+  width: 100%;
+}
+.category-btn {
+  font-weight: bold !important;
+  text-transform: capitalize;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  cursor: pointer;
+  background: transparent;
+  outline: none;
+  border: none;
+
+  padding: 7px 15px;
+  margin: 10px 0px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  font-size: smaller;
+}
+
+.category-btn:hover {
+  background-color: #fc1503 !important;
+  color: white !important;
+}
+
+.category-btn:hover span {
+  color: white !important;
+}
+
+.miniProfileImg {
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/*App.js*/
+.homeContainer {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+/*Feed.jsx*/
+.feedContainer {
+  padding: 2vw;
+  gap: 30px;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+/*channel page (ChannelDetail.jsx)*/
+.channelProfileTemplate {
+  height: 20vh;
+  z-index: 10;
+  background: white;
+  width: 100%;
+}
+
+.ChannelBanner {
+  height: inherit;
+  width: inherit;
+  object-fit: cover;
+}
+
+.channelProfileCard {
+  display: flex;
+  flex-direction: row;
+  width: 80%;
+  align-items: flex-start;
+  color: lightgray;
+  gap: 20px;
+  margin: 20px 0 20px 0;
+}
+.channelProfileCard img {
+  border-radius: 50%;
+  object-fit: cover;
+  width: 135px;
+  height: auto;
+}
+.CardDetail {
+  font-size: small;
+  margin: 3px;
+  font-weight: 100;
+}
+.tabStyle {
+  color: azure;
+}
+
+.TabsInProfile {
+  margin-left: 100px;
+  width: fit-content;
+}
+
+/*SignIn (SignIn.jsx)*/
+
+/*SignUp (SignUp.jsx)*/
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.signup-form .MuiTextField-root {
+  border: 1px solid azure;
+  border-radius: 3px;
+  padding: 10px;
+  background-color: transparent;
+  width: 50vw;
+  min-width: 250px;
+  color: azure;
+}
+
+.signup-form .MuiButton-root {
+  margin-top: 20px;
+  width: 30vw;
+  min-width: 300px;
+}
+
+/*VideoDetail page (VideoDetail.jsx)*/
+.video_page_container {
+  display: flex;
+  gap: 24px;
+}
+.video_page_content {
+  flex: 1;
+  padding: 2vw;
+}
+.video-wrap {
+  width: 100%;
+}
+.video-container {
+  position: relative;
+  overflow: hidden;
+  height: 0;
+  padding-bottom: 56.25%; /* creates a 16:9 aspect ratio */
+}
+.react-player {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  border-radius: 1rem;
+}
+.video_title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 15px 0px;
+  color: #fff;
+}
+.video_details {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.channel_details {
+  display: flex;
+  flex-direction: column;
+}
+.sub_count {
+  font-weight: 200;
+  margin-top: 5px;
+  margin-bottom: 20px;
+  color: lightgrey;
+  font-size: 12px;
+}
+.video_buttons {
+  display: flex;
+  gap: 20px;
+  color: #fff;
+}
+.subscribe_button {
+  background-color: #fff;
+  font-weight: 600;
+  color: black;
+  border: none;
+  border-radius: 2rem;
+  height: max-content;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+.subscribe_button:hover {
+  background-color: lightgray;
+}
+.video_description {
+  display: flex;
+  flex-direction: column;
+  background: rgb(36, 36, 36);
+  background: linear-gradient(
+    0deg,
+    rgba(36, 36, 36, 1) 0%,
+    rgba(48, 48, 48, 1) 100%
+  );
+  border-radius: 1rem;
+  padding: 1rem;
+}
+.read_Less_Para {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+.read_moreLess_btn{
+  background: transparent;
+  color: azure;
+  font-weight: 600;
+}
+
+/*Video card (VideoCard.jsx)*/
+.videoCard {
+  width: 360px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.videoThumbnail {
+  width: 100%;
+  height: 202px;
+  background-color: #999;
+  flex: 1;
+  border-radius: 1rem;
+  object-fit: cover;
+}
+.video_card_ProfileImg {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #999;
+}
+.videoDetail {
+  display: flex;
+  gap: 12px;
+  flex: 1;
+}
+
+/* comment section (CommentSection.jsx) */
+.newComment{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.new_comment_profileImg{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+.comment_input{
+  border: none;
+  border-bottom: 1px solid grey;
+  color: azure;
+  background-color: transparent;
+  outline: none;
+  padding: 5px;
+  width: 100%;
+}
+.comments_count{
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* comment (comment.jsx) */
+.comment_container{
+  display: flex;
+  gap: 10px;
+  margin: 30px 0px;
+}
+.comment_profileImg{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+.comment_details{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: azure;
+}
+.comment_user_name{
+  font-size: 13px;
+  font-weight: 500;
+}
+.comment_desc{
+  font-size: 14px;
+}
+.comment_date{
+  font-size: 12px;
+  font-weight: 400;
+  color: lightgrey;
+  margin-left: 5px;
+}
+
+/* Upload (Upload.jsx)*/
+.upload_container{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #000000a7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+.upload_wrapper{
+  width: 600px;
+  height: 600px;
+  background: rgb(36, 36, 36);
+  background: linear-gradient(
+    0deg,
+    rgba(36, 36, 36, 1) 0%,
+    rgba(48, 48, 48, 1) 100%
+  );
+  color: azure;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+  border-radius: 1rem;
+}
+.upload_page_close_btn{
+  position: absolute;
+  top: 10px;
+  right: 10px;                             
+  cursor: pointer;
+}
+.upload_input{
+  border: 1px solid white;
+  color: azure;
+  border-radius: 3px;
+  padding: 10px;
+  background-color: transparent;
+  z-index: 999;
+}
+.upload_btn{
+  border-radius: 3px;
+  border: none;
+  padding: 10px 20px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid white;
+  color: black;
+}
+@media screen and (max-width: 900px) {
+  .category-btn {
+    margin: 10px;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .copyright {
+    display: none !important;
+  }
+
+  .search-bar {
+    width: 200px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .Sidebar_main {
+    height: auto;
+    flex-direction: row;
+    overflow-x: scroll;
+    padding: 0;
+  }
+
+  .sidebar_container{
+    position: fixed;
+    left: -1000px;
+  }
+
+  .homeContainer {
+    flex-direction: column;
+  }
+
+  .category-btn {
+    padding: 5px 10px;
+    margin: 5px 2px;
+    border-radius: 20px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .scroll-horizontal {
+    overflow: auto !important;
+  }
+
+  .react-player {
+    height: 45vh !important;
+  }
+
+  .search-bar {
+    width: 115px;
+  }
+
+  .channelProfileCard {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .channelProfileCard :nth-child(2) {
+    align-items: center;
+  }
+
+  .TabsInProfile {
+    margin: auto;
+  }
+
+  .channelProfileCard img {
+    width: 75px;
+  }
+
+  .channelProfileTemplate {
+    height: 10vh;
+  }
+}
