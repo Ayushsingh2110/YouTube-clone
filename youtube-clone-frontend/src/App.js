@@ -9,50 +9,39 @@ import ExplorePage from './pages/Explore';
 
 const App = () => {
     const isMobile = useMediaQuery('(max-width: 480px)');
-    
+
     const [selectedCategory, setSelectedCategory] = useState("New");
 
-    let [ShowSidebar, setShowSidebar] = useState(true);
+    let [ShowSidebar, setShowSidebar] = useState(false);
     /*useEffect(() => {
         fetchFromAPI(`search?part=snippet&q=${selectedCategory}`).then((data) =>
             setVideos(data.items)
         );
     }, [selectedCategory]);*/
 
-    let sidebar;
-    if (ShowSidebar && !isMobile) {
-        sidebar =
-            <Box sx={{ flex: 0.15 }} >
-                <Box
-                    sx={{
-                        height: { sx: "auto", md: "92vh" },
-                    }}
-                >
-                    <Sidebar
-                        selectedCategory={selectedCategory}
-                        setSelectedCategory={setSelectedCategory}
-                    />
-                </Box>
-            </Box>
-    }
-
     return (
         <BrowserRouter>
-            <Box sx={{ backgroundColor: '#0f0f0f', height:"100vh", width:"100%" }}>
+            <Box sx={{ backgroundColor: '#0f0f0f', height: "100vh", width: "100%" }}>
                 <Navbar ShowSidebar={ShowSidebar} setShowSidebar={setShowSidebar} />
-                <div className="homeContainer">
-                    <div className="sidebar_container">
-                       {sidebar} 
-                    </div>
+                {ShowSidebar && !isMobile && (
+                        <div className="sidebar_container">
+                            <Sidebar
+                                selectedCategory={selectedCategory}
+                                setSelectedCategory={setSelectedCategory}
+                            />
+                        </div>
+                    )
 
+                }
+                <div className="homeContainer">
                     <Box sx={{ flex: 1, height: '100%' }}>
 
                         <Routes>
                             <Route path="/">
                                 <Route index element={<Feed type="random" />} />
                                 <Route path="explore">
-                                    <Route index element={<ExplorePage />}/>
-                                    <Route path="trending" element={<Feed type="trending" />}/>
+                                    <Route index element={<ExplorePage />} />
+                                    <Route path="trending" element={<Feed type="trending" />} />
                                 </Route>
                                 <Route path="subscriptions" element={<Feed type="subscription" />} />
                                 <Route path={selectedCategory} element={<Feed selectedCategory={selectedCategory} />} />
@@ -74,7 +63,7 @@ const App = () => {
                         </Routes>
 
                     </Box>
-                    
+
                 </div>
                 {isMobile && <BottomNav />}
 

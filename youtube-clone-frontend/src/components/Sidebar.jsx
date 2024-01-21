@@ -17,20 +17,19 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import SettingsBrightnessOutlinedIcon from "@mui/icons-material/SettingsBrightnessOutlined";
-import AccountBoxOutlinedIcon from '@mui/icons-material/AccountBoxOutlined';
+import AccountBoxOutlinedIcon from "@mui/icons-material/AccountBoxOutlined";
 
 import { Link, NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const Container = styled.div`
-  flex: 1;
   color: azure;
   font-size: 14px;
   position: sticky;
   top: 0;
 `;
 const Wrapper = styled.div`
-  padding: 18px 26px;
+  padding: 18px 18px;
   border-bottom: 1px solid grey;
 `;
 const Logo = styled.div`
@@ -60,7 +59,11 @@ const Hr = styled.hr`
   border: 0.1px solid ${({ theme }) => theme.soft};
 `;
 
-const Login = styled.div``;
+const Login = styled.div`
+  width: 70%;
+  margin: 10px auto;
+  text-align: start;
+`;
 const Button = styled.button`
   padding: 5px 15px;
   background-color: transparent;
@@ -82,7 +85,6 @@ const Title = styled.h2`
   margin-bottom: 20px;
 `;
 
-
 const Menu = ({ darkMode, setDarkMode }) => {
   const { currentUser } = useSelector((state) => state.user);
 
@@ -95,43 +97,42 @@ const Menu = ({ darkMode, setDarkMode }) => {
             Home
           </Item>
         </NavLink>
-        <NavLink
-          to="/explore"
-          activeclassname="active-menu-link"
-        >
+        <NavLink to="/explore" activeclassname="active-menu-link">
           <Item>
             <ExploreOutlinedIcon />
             Explore
           </Item>
         </NavLink>
 
-        <NavLink
-          to="/subscriptions"
-          activeclassname="active-menu-link"
-        >
+        {currentUser && (
+          <NavLink to="/subscriptions" activeclassname="active-menu-link">
+            <Item>
+              <SubscriptionsOutlinedIcon />
+              Subscriptions
+            </Item>
+          </NavLink>
+        )}
+      </Wrapper>
+
+      {currentUser && (
+        <Wrapper>
+          <Link to={currentUser && `/channel/${currentUser._id}`}>
+            <Item>
+              <AccountBoxOutlinedIcon />
+              Your channel
+            </Item>
+          </Link>
+
           <Item>
-            <SubscriptionsOutlinedIcon />
-            Subscriptions
+            <VideoLibraryOutlinedIcon />
+            Library
           </Item>
-        </NavLink>
-      </Wrapper>
-      <Wrapper>
-        <Link to={currentUser && `/channel/${currentUser._id}`}>
-        <Item>
-          <AccountBoxOutlinedIcon />
-          Your channel 
-        </Item>
-        </Link>
-        
-        <Item>
-          <VideoLibraryOutlinedIcon />
-          Library
-        </Item>
-        <Item>
-          <HistoryOutlinedIcon />
-          History
-        </Item>
-      </Wrapper>
+          <Item>
+            <HistoryOutlinedIcon />
+            History
+          </Item>
+        </Wrapper>
+      )}
 
       {!currentUser && (
         <>
@@ -144,7 +145,6 @@ const Menu = ({ darkMode, setDarkMode }) => {
               </Button>
             </Link>
           </Login>
-          <Hr />
         </>
       )}
       <Wrapper>

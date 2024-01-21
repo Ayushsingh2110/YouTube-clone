@@ -38,8 +38,34 @@ const Button = styled.div`
   align-items: center;
   gap: 5px;
   cursor: pointer;
+  font-size: 18px;
+
+  @media (max-width: 1024px){
+    font-size: 12px;
+  }
+
 `;
 
+const ChannelName = styled.h6`
+  font-size: 16px;
+  color: #fff;
+  margin: 0;
+  @media (max-width: 1024px){
+    font-size: 14px;
+  }
+  @media (max-width: 768px){
+    font-size: 12px;
+  }
+`
+const ChannelCard = styled.div`
+  display: flex;
+  gap: 10px;
+  
+  @media (max-width: 768px){
+    width: 100%;
+    justify-content: space-between;
+  }
+`
 const VideoDetail = ({ setShowSidebar }) => {
   const { currentUser } = useSelector((state) => state.user);
   const currentVideo = useSelector((state) => state.video.currentVideo);
@@ -53,7 +79,6 @@ const VideoDetail = ({ setShowSidebar }) => {
   const { id } = useParams();
 
   const [channelDetails, setChannelDetails] = useState();
-  const [RelatedVideos, setRelatedVideo] = useState(null);
   const [IsOpen, setIsOpen] = useState(false);
 
   const GetDataFromAPI = async () => {
@@ -68,14 +93,6 @@ const VideoDetail = ({ setShowSidebar }) => {
         if (fetchedChannel) {
           setChannelDetails(fetchedChannel);
         }
-
-        const relatedResponse = await fetchFromAPI(
-          `search?part=id,snippet&type=video&relatedToVideoId=${id}&maxResults=20`
-        );
-        const relatedVideos = relatedResponse.items;
-        if (relatedVideos) {
-          setRelatedVideo(relatedVideos);
-        }
       }
     } catch (error) {
       dispatch(videoFetchFailure());
@@ -83,12 +100,12 @@ const VideoDetail = ({ setShowSidebar }) => {
     }
   };
 
-  const addViews = async() => {
+  const addViews = async () => {
     if (currentUser?._id !== currentVideo?.userId) {
-      const userId = currentUser._id
-      try{
-        await putToServer(`video/view/${currentVideo?._id}`, { userId })
-      }catch{
+      const userId = currentUser?._id;
+      try {
+        await putToServer(`video/view/${currentVideo?._id}`, { userId });
+      } catch {
         console.log("view not added");
       }
     }
@@ -114,13 +131,12 @@ const VideoDetail = ({ setShowSidebar }) => {
   }
 
   const handleLike = async () => {
-    try{
+    try {
       await putToServer(`user/like/${currentVideo?._id}`);
-    dispatch(like(currentUser?._id));
-    }catch(err){
+      dispatch(like(currentUser?._id));
+    } catch (err) {
       console.log(`from videoDetail: ${err}`);
     }
-    
   };
 
   const handleDislike = async () => {
@@ -143,12 +159,12 @@ const VideoDetail = ({ setShowSidebar }) => {
           text: currentVideo.description,
           url: window.location.href,
         });
-        console.log('Shared successfully');
+        console.log("Shared successfully");
       } catch (error) {
-        console.error('Error sharing:', error.message);
+        console.error("Error sharing:", error.message);
       }
     } else {
-      console.log('Web Share API not supported');
+      console.log("Web Share API not supported");
     }
   };
 
@@ -156,50 +172,46 @@ const VideoDetail = ({ setShowSidebar }) => {
     <div className="video_page_container">
       <div className="video_page_content">
         {/*Video Player*/}
-
-        <div className="video-wrap">
-          <div className="video-container">
-            <video className="react-player" controls>
-              <source src={currentVideo.videoUrl}></source>
-            </video>
-          </div>
+        <div className="video-container">
+          <video className="react-player" controls>
+            <source src={currentVideo.videoUrl}></source>
+          </video>
         </div>
 
         {/* Video Title */}
         <h1 className="video_title">{currentVideo?.title}</h1>
 
         <div className="video_details">
-          <Box sx={{ display: "flex", gap: "10px" }}>
-            <Link to={`/channel/${channelDetails?._id}`}>
-              {/* Channel Avatar */}
-              <Avatar
-                src={channelDetails?.profileImg || demoProfilePicture}
-                alt={channelDetails?.name}
-                className="miniProfileImg"
-              />
-            </Link>
-
-            <div className="channel_details">
-              <Link
-                to={`/channel/${channelDetails?._id}`}
-                style={{ display: "Flex", alignItems: "center" }}
-              >
-                {/* Channel name */}
-                <Typography
-                  variant={{ sm: "subtitle1", md: "h6" }}
-                  color="#fff"
-                >
-                  {channelDetails?.name}
-                  <CheckCircleIcon
-                    sx={{ fontSize: "12px", color: "gray", ml: "5px" }}
-                  />
-                </Typography>
+          <ChannelCard>
+            <Box sx={{ display: "flex", gap: "10px" }}>
+              <Link to={`/channel/${channelDetails?._id}`}>
+                {/* Channel Avatar */}
+                <Avatar
+                  src={channelDetails?.profileImg || demoProfilePicture}
+                  alt={channelDetails?.name}
+                  className="miniProfileImg"
+                />
               </Link>
 
-              <span className="sub_count">
-                {channelDetails?.subscribers} subscribers
-              </span>
-            </div>
+              <div className="channel_details">
+                <Link
+                  to={`/channel/${channelDetails?._id}`}
+                  style={{ display: "Flex", alignItems: "center" }}
+                >
+                  <ChannelName>
+                    {channelDetails?.name}
+                    <CheckCircleIcon
+                      sx={{ fontSize: "12px", color: "gray", ml: "5px" }}
+                    />
+                  </ChannelName>
+                </Link>
+
+                <span className="sub_count">
+                  {channelDetails?.subscribers} subscribers
+                </span>
+              </div>
+            </Box>
+
             {currentUser?._id !== currentVideo.userId && (
               <button className="subscribe_button" onClick={handleSub}>
                 {currentUser?.subscribedUsers?.includes(channelDetails?._id)
@@ -207,10 +219,10 @@ const VideoDetail = ({ setShowSidebar }) => {
                   : "Subscribe"}
               </button>
             )}
-          </Box>
+          </ChannelCard>
 
           <div className="video_buttons">
-            <Button onClick={handleLike}>
+            <Button onClick={handleLike} sx={{}}>
               {currentVideo.likes?.includes(currentUser?._id) ? (
                 <ThumbUpIcon />
               ) : (
