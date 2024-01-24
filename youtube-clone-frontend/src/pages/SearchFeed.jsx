@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { Box, Stack, Typography } from "@mui/material";
-import { NoSearchResult, Sidebar, VideoCard, Videos } from "../components"; // './' means parent folder
+import { Sidebar, VideoCard, Videos } from "../components";
 import { fetchFromAPI, fetchFromserver } from "../utils/fetchFromAPI";
 import { useParams } from "react-router-dom";
+import { NoSearchResult } from "../utility_pages";
 
 const SearchFeed = () => {
   

@@ -7,7 +7,7 @@ const ExploreList = [
     {
         name: "Music",
         icon: "",
-        path: "/music"
+        path: "/explore/music"
     },
     {
         name: "Movies",

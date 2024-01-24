@@ -91,46 +91,51 @@ const Menu = ({ darkMode, setDarkMode }) => {
   return (
     <Container>
       <Wrapper>
-        <NavLink exact to="/" activeclassname="active-menu-link">
-          <Item>
-            <HomeIcon />
-            Home
-          </Item>
+        <NavLink
+          to="/"
+          className={({ isActive }) =>
+            `${isActive ? "link active-menu-link" : "link"}`
+          }
+        >
+          <HomeIcon />
+          Home
         </NavLink>
-        <NavLink to="/explore" activeclassname="active-menu-link">
-          <Item>
+
+        <NavLink to="/explore" end className={({ isActive }) =>
+            `${isActive ? "link active-menu-link" : "link"}`
+          }>
             <ExploreOutlinedIcon />
             Explore
-          </Item>
         </NavLink>
 
         {currentUser && (
-          <NavLink to="/subscriptions" activeclassname="active-menu-link">
-            <Item>
+          <NavLink to="/subscriptions" className={({ isActive }) =>
+          `${isActive ? "link active-menu-link" : "link"}`
+        }>
               <SubscriptionsOutlinedIcon />
-              Subscriptions
-            </Item>
+              Subscription
           </NavLink>
         )}
       </Wrapper>
 
       {currentUser && (
         <Wrapper>
-          <Link to={currentUser && `/channel/${currentUser._id}`}>
-            <Item>
+          <NavLink to={currentUser && `/channel/${currentUser._id}`} className={({ isActive }) =>
+            `${isActive ? "link active-menu-link" : "link"}`
+          }>
               <AccountBoxOutlinedIcon />
               Your channel
-            </Item>
-          </Link>
+          </NavLink>
 
-          <Item>
+          <NavLink>
             <VideoLibraryOutlinedIcon />
             Library
-          </Item>
-          <Item>
+          </NavLink>
+
+          <NavLink>
             <HistoryOutlinedIcon />
             History
-          </Item>
+          </NavLink>
         </Wrapper>
       )}
 
@@ -148,26 +153,31 @@ const Menu = ({ darkMode, setDarkMode }) => {
         </>
       )}
       <Wrapper>
-        <Item>
+        <NavLink to="/explore/music" className={({ isActive }) =>
+            `${isActive ? "link active-menu-link" : "link"}`}>
           <LibraryMusicOutlinedIcon />
           Music
-        </Item>
-        <Item>
+        </NavLink>
+        <NavLink to="/explore/sports" className={({ isActive }) =>
+            `${isActive ? "link active-menu-link" : "link"}`}>
           <SportsBasketballOutlinedIcon />
           Sports
-        </Item>
-        <Item>
+        </NavLink>
+        <NavLink to="/explore/gaming" className={({ isActive }) =>
+            `${isActive ? "link active-menu-link" : "link"}`}>
           <SportsEsportsOutlinedIcon />
           Gaming
-        </Item>
-        <Item>
+        </NavLink>
+        <NavLink to="/explore/movies" className={({ isActive }) =>
+            `${isActive ? "link active-menu-link" : "link"}`}>
           <MovieOutlinedIcon />
           Movies
-        </Item>
-        <Item>
+        </NavLink>
+        <NavLink to="/explore/news" className={({ isActive }) =>
+            `${isActive ? "link active-menu-link" : "link"}`}>
           <ArticleOutlinedIcon />
           News
-        </Item>
+        </NavLink>
       </Wrapper>
     </Container>
   );

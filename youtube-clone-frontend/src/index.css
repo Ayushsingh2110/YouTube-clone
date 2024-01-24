@@ -88,9 +88,18 @@ a {
 }
 
 /*Side bar (Sidebar.jsx)*/
-.active-menu-link{
-  color: black;
-  background-color: azure;
+.link{
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  color: azure;
+  cursor: pointer;
+  padding: 7.5px 10px;
+  border-radius: 1rem;
+}
+.link.active-menu-link{
+  color: black !important;
+  background-color: azure !important;
 }
 
 .sidebar_container{
