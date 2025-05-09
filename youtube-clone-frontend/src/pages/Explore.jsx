@@ -15,6 +15,7 @@ const Img = styled.img`
   background-color: gray;
 `;
 const Card = styled.div`
+  flex: 1;
   height: max-content;
   width: max-content;
   padding: 1rem;

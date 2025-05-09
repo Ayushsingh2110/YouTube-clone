@@ -12,13 +12,13 @@ const ExploreList = [
     {
         name: "Movies",
         icon: "",
-        path: "/movies"
+        path: "/explore/movies"
     },
     {
         name: "News",
         icon: "",
-        path: "/news"
-    }
+        path: "/explore/news"
+    },
 ]
 
 export default ExploreList;

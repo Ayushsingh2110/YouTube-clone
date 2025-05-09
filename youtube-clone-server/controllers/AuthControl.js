@@ -59,23 +59,27 @@ export const googleAuth = async (req,res,next) => {
     try {
         const user = await User.findOne({email: req.body.email});
         if(user){
+            console.log("user present")
+            console.log(user)
             const token = jwt.sign({id: user._id}, process.env.JWT);
             res.cookie("access_token", token, {
                 httpOnly: true,
             }).status(200).json(user._doc);
         }else{
+            console.log("user not present")
+            console.log(req.body)
             const user = new User({
                 ...req.body,
                 fromGoogle: true
             })
             const userSave = await user.save() 
-
             const token = jwt.sign({id: userSave._id}, process.env.JWT);
             res.cookie("access_token", token, {
                 httpOnly: true,
             }).status(200).json(userSave._doc);
         }
     } catch (error) {
+        console.log("error is here !!!")
         next(error);
     }
 }

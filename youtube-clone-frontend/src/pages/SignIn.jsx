@@ -100,11 +100,14 @@ const SignIn = () => {
     dispatch(loginStart());
     signInWithPopup(auth, provider)
       .then((result) => {
+        console.log("after google")
+        console.log(result.user)
         postToServer("auth/google", {
           name: result.user.displayName,
           email: result.user.email,
           profileImg: result.user.photoURL,
         }).then((res) => {
+          console.log(res)
           dispatch(loginSuccess(res.data));
           navigate("/");
         });

@@ -73,7 +73,7 @@ const Navbar = ({ ShowSidebar, setShowSidebar }) => {
     <>
     <div className="Navbar">
       <Stack direction="row" alignItems="start">
-        {!isTablet && (
+        {!isMobile && (
           <IconButton
             aria-label="open drawer"
             edge="start"
@@ -130,7 +130,7 @@ const Navbar = ({ ShowSidebar, setShowSidebar }) => {
           <NotificationsNoneIcon />
         </IconButton>
 
-        {/*-------- SignIn Button / user profile icon -------- */}
+        {/*-------- SignIn Button -------- */}
         {!isMobile && !isAuthenticated && (
           <Link to="/signin">
             <div className="signInBtn">
@@ -151,6 +151,7 @@ const Navbar = ({ ShowSidebar, setShowSidebar }) => {
           </Link>
         )}
 
+        {/*--------  user profile icon -------- */}
         {!isMobile && isAuthenticated && (
           <Avatar src={currentUser.profileImg} alt={currentUser.name}>
             {!currentUser.profileImg ? currentUser.name[0].toUpperCase() : null}

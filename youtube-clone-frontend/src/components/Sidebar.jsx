@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-
+import { Box, Stack, Typography, useMediaQuery } from '@mui/material';
 import HomeIcon from "@mui/icons-material/Home";
 import ExploreOutlinedIcon from "@mui/icons-material/ExploreOutlined";
 import SubscriptionsOutlinedIcon from "@mui/icons-material/SubscriptionsOutlined";
@@ -85,8 +85,15 @@ const Title = styled.h2`
   margin-bottom: 20px;
 `;
 
-const Menu = ({ darkMode, setDarkMode }) => {
+const Menu = ({ darkMode, setDarkMode, setShowSidebar }) => {
   const { currentUser } = useSelector((state) => state.user);
+  const isTab = useMediaQuery('(max-width: 768px)');
+
+  function CloseSideBar(){
+    if(isTab){
+      setShowSidebar(false);
+    }
+  }
 
   return (
     <Container>
@@ -96,6 +103,7 @@ const Menu = ({ darkMode, setDarkMode }) => {
           className={({ isActive }) =>
             `${isActive ? "link active-menu-link" : "link"}`
           }
+          onClick={CloseSideBar}
         >
           <HomeIcon />
           Home
@@ -103,7 +111,9 @@ const Menu = ({ darkMode, setDarkMode }) => {
 
         <NavLink to="/explore" end className={({ isActive }) =>
             `${isActive ? "link active-menu-link" : "link"}`
-          }>
+          }
+          onClick={CloseSideBar}
+          >
             <ExploreOutlinedIcon />
             Explore
         </NavLink>
@@ -111,7 +121,9 @@ const Menu = ({ darkMode, setDarkMode }) => {
         {currentUser && (
           <NavLink to="/subscriptions" className={({ isActive }) =>
           `${isActive ? "link active-menu-link" : "link"}`
-        }>
+        }
+        onClick={CloseSideBar}
+        >
               <SubscriptionsOutlinedIcon />
               Subscription
           </NavLink>
@@ -122,17 +134,19 @@ const Menu = ({ darkMode, setDarkMode }) => {
         <Wrapper>
           <NavLink to={currentUser && `/channel/${currentUser._id}`} className={({ isActive }) =>
             `${isActive ? "link active-menu-link" : "link"}`
-          }>
+          }
+          onClick={CloseSideBar}
+          >
               <AccountBoxOutlinedIcon />
               Your channel
           </NavLink>
 
-          <NavLink>
+          <NavLink onClick={CloseSideBar}>
             <VideoLibraryOutlinedIcon />
             Library
           </NavLink>
 
-          <NavLink>
+          <NavLink onClick={CloseSideBar}>
             <HistoryOutlinedIcon />
             History
           </NavLink>
@@ -143,7 +157,7 @@ const Menu = ({ darkMode, setDarkMode }) => {
         <>
           <Login>
             Sign in to like videos, comment, and subscribe.
-            <Link to="signin" style={{ textDecoration: "none" }}>
+            <Link to="signin" style={{ textDecoration: "none" }} onClick={CloseSideBar}>
               <Button>
                 <AccountCircleOutlinedIcon />
                 SIGN IN
@@ -154,27 +168,27 @@ const Menu = ({ darkMode, setDarkMode }) => {
       )}
       <Wrapper>
         <NavLink to="/explore/music" className={({ isActive }) =>
-            `${isActive ? "link active-menu-link" : "link"}`}>
+            `${isActive ? "link active-menu-link" : "link"}`} onClick={CloseSideBar}>
           <LibraryMusicOutlinedIcon />
           Music
         </NavLink>
         <NavLink to="/explore/sports" className={({ isActive }) =>
-            `${isActive ? "link active-menu-link" : "link"}`}>
+            `${isActive ? "link active-menu-link" : "link"}`} onClick={CloseSideBar}>
           <SportsBasketballOutlinedIcon />
           Sports
         </NavLink>
         <NavLink to="/explore/gaming" className={({ isActive }) =>
-            `${isActive ? "link active-menu-link" : "link"}`}>
+            `${isActive ? "link active-menu-link" : "link"}`} onClick={CloseSideBar}>
           <SportsEsportsOutlinedIcon />
           Gaming
         </NavLink>
         <NavLink to="/explore/movies" className={({ isActive }) =>
-            `${isActive ? "link active-menu-link" : "link"}`}>
+            `${isActive ? "link active-menu-link" : "link"}`} onClick={CloseSideBar}>
           <MovieOutlinedIcon />
           Movies
         </NavLink>
         <NavLink to="/explore/news" className={({ isActive }) =>
-            `${isActive ? "link active-menu-link" : "link"}`}>
+            `${isActive ? "link active-menu-link" : "link"}`} onClick={CloseSideBar}>
           <ArticleOutlinedIcon />
           News
         </NavLink>

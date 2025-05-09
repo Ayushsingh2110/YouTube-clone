@@ -19,6 +19,7 @@ const SearchBar = ({ searchTerm, setSearchterm}) => {
     }
   }
   return (
+    <>
     <Paper
     component="form"
     onSubmit={submitSearch}
@@ -47,6 +48,9 @@ const SearchBar = ({ searchTerm, setSearchterm}) => {
         </IconButton>
         
     </Paper>
+    
+    </>
+    
   )
 }
 
